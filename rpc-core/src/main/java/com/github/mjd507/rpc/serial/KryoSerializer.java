@@ -38,7 +38,7 @@ public class KryoSerializer implements Serializer {
             kryoThreadLocal.remove();
             return output.toBytes();
         } catch (Exception e) {
-            throw new SerializeException("序列化失败");
+            throw new SerializeException("序列化失败", e);
         }
     }
 
@@ -52,7 +52,7 @@ public class KryoSerializer implements Serializer {
             kryoThreadLocal.remove();
             return clazz.cast(o);
         } catch (Exception e) {
-            throw new SerializeException("反序列化失败");
+            throw new SerializeException("反序列化失败,", e);
         }
     }
 

@@ -1,6 +1,5 @@
 package com.github.mjd507.rpc.entity;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,7 +9,6 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@Builder
 @ToString
 public class RpcRequest {
     private String requestId;

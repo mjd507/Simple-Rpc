@@ -1,7 +1,6 @@
 package com.github.mjd507.rpc.entity;
 
 import com.github.mjd507.util.http.ApiCode;
-import com.github.mjd507.util.http.ApiResponse;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,25 +11,23 @@ import lombok.ToString;
 @ToString
 @Setter
 @Getter
-public class RpcResponse extends ApiResponse {
+public class RpcResponse {
     private String requestId;
+    private int code;
+    private Object data;
+    private String msg;
 
-    public RpcResponse(int code, Object data, String msg) {
-        super(code, data, msg);
+    public RpcResponse() {
+    }
+
+    public RpcResponse(String requestId, int code, Object data, String msg) {
+        this.requestId = requestId;
+        this.code = code;
+        this.msg = msg;
+        this.data = data;
     }
 
     public static RpcResponse success(String requestId, Object result) {
-        ApiResponse apiResponse = ApiResponse.ok(result);
-        RpcResponse rpcResponse = (RpcResponse) apiResponse;
-        rpcResponse.requestId = requestId;
-        return rpcResponse;
+        return new RpcResponse(requestId, ApiCode.OK.getCode(), result, ApiCode.OK.getDesc());
     }
-
-    public static RpcResponse error(String requestId, ApiCode apiCode) {
-        ApiResponse apiResponse = ApiResponse.error(apiCode);
-        RpcResponse rpcResponse = (RpcResponse) apiResponse;
-        rpcResponse.requestId = requestId;
-        return rpcResponse;
-    }
-
 }

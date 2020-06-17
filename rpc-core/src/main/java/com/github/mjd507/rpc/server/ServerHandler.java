@@ -3,7 +3,6 @@ package com.github.mjd507.rpc.server;
 import com.github.mjd507.rpc.entity.RpcRequest;
 import com.github.mjd507.rpc.entity.RpcResponse;
 import com.github.mjd507.rpc.exception.RpcException;
-import com.github.mjd507.util.http.ApiCode;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -43,8 +42,8 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     private Object handle(RpcRequest rpcRequest) {
         Object result;
         try {
-            Object service = ServiceProvider.getServiceProvider(rpcRequest.getInterfaceName());
-            Method method = rpcRequest.getInterfaceName().getClass().getMethod(rpcRequest.getMethodName(), rpcRequest.getParamTypes());
+            Object service = ServerProxyProvider.getProxy(rpcRequest.getInterfaceName());
+            Method method = service.getClass().getMethod(rpcRequest.getMethodName(), rpcRequest.getParamTypes());
             result = method.invoke(service, rpcRequest.getParameters());
             log.info("service:[{}] successful invoke method:[{}]", rpcRequest.getInterfaceName(), rpcRequest.getMethodName());
         } catch (NoSuchMethodException | IllegalArgumentException | InvocationTargetException | IllegalAccessException e) {

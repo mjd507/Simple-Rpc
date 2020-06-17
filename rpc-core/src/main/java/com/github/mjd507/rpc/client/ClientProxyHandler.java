@@ -31,13 +31,13 @@ public class ClientProxyHandler implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         log.info("invoked method: [{}]", method.getName());
-        RpcRequest rpcRequest = RpcRequest.builder()
-                .requestId(UUID.randomUUID().toString())
-                .methodName(method.getName())
-                .parameters(args)
-                .interfaceName(method.getDeclaringClass().getName())
-                .paramTypes(method.getParameterTypes())
-                .build();
+        if (method.getName().equals("toString")) return null;
+        RpcRequest rpcRequest = new RpcRequest();
+        rpcRequest.setRequestId(UUID.randomUUID().toString());
+        rpcRequest.setMethodName(method.getName());
+        rpcRequest.setParameters(args);
+        rpcRequest.setInterfaceName(method.getDeclaringClass().getName());
+        rpcRequest.setParamTypes(method.getParameterTypes());
         CompletableFuture<RpcResponse> completableFuture = nettyClient.sendRequest(rpcRequest);
         RpcResponse rpcResponse = completableFuture.get();
         return rpcResponse.getData();

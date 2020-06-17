@@ -24,14 +24,13 @@ import io.netty.handler.logging.LoggingHandler;
 public class NettyServer {
 
     private int port;
-    private KryoSerializer kryoSerializer;
 
     public NettyServer(int port) {
         this.port = port;
-        kryoSerializer = new KryoSerializer();
     }
 
     public void start() {
+        KryoSerializer kryoSerializer = new KryoSerializer();
         //EventLoopGroup 是用来处理IO操作的多线程事件循环器
         // bossGroup 用来接收进来的连接
         EventLoopGroup bossGroup = new NioEventLoopGroup();
